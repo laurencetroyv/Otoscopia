@@ -70,3 +70,5 @@ yarn-error.log
 # sonar
 .scannerwork
 sonar-project.properties
+
+google-services.json
