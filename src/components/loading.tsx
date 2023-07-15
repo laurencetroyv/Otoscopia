@@ -1,4 +1,4 @@
-import { View, useColorScheme } from 'react-native';
+import { StyleSheet, View, useColorScheme } from 'react-native';
 import React from 'react';
 import { Modal, Portal } from 'react-native-paper';
 import AnimatedLottieView from 'lottie-react-native';
@@ -12,8 +12,8 @@ export default function Loading({
 }): React.JSX.Element {
   const colorScheme =
     useColorScheme() === 'dark'
-      ? colors.dark.background
-      : colors.light.background;
+      ? colors.background.dark
+      : colors.background.light;
 
   return (
     <Portal>
