@@ -26,7 +26,18 @@ export default function SignIn(): React.JSX.Element {
   );
 
   const onClick = () => {
-    if (email && password && !emailError && !passwordError) {
+    const emailChecker = !email || emailError;
+    const passwordChecker = !password || passwordError;
+
+    if (emailChecker) {
+      setEmailError(emailChecker);
+    }
+
+    if (passwordChecker) {
+      setPasswordError(passwordChecker);
+    }
+
+    if (!(emailChecker && passwordChecker)) {
       loggedInRequest(email, password);
     }
   };
@@ -40,7 +51,7 @@ export default function SignIn(): React.JSX.Element {
       <View>
         <Text className="text-3xl font-bold text-primary">Hello</Text>
         <Text className="text-3xl font-bold">Login Now</Text>
-        <Text className="pt-2 w-3/5">
+        <Text className="pt-2 w-3/4">
           Please fill in the form to create a new account and continue
         </Text>
       </View>
@@ -55,51 +66,54 @@ export default function SignIn(): React.JSX.Element {
           keyboardType="email-address"
           onChangeText={setEmail}
           onEndEditing={() => {
-            if (!email.includes('@deped.edu.ph')) {
-              setEmailError(true);
-            } else {
-              setEmailError(false);
-            }
+            const emailChecker = !email.includes('@deped.edu.ph');
+            setEmailError(emailChecker);
           }}
           right={<TextInput.Icon icon="email" forceTextInputFocus={false} />}
           placeholder="@deped.edu.ph"
+          error={emailError}
         />
 
         {emailError && (
-          <HelperText type="error" visible className="text-center">
-            Invalid email address must be a valid deped account
+          <HelperText type="error" visible>
+            Invalid email address must be a valid deped account.
           </HelperText>
         )}
       </View>
 
-      <TextInput
-        mode="outlined"
-        label="Password"
-        autoComplete="password"
-        autoCapitalize="none"
-        inputMode="text"
-        onChangeText={setPassword}
-        secureTextEntry={isSecure}
-        onEndEditing={() => {
-          if (password.length < 8) {
-            setPasswordError(true);
-          } else {
-            setPasswordError(false);
+      <View>
+        <TextInput
+          mode="outlined"
+          label="Password"
+          autoComplete="password"
+          autoCapitalize="none"
+          inputMode="text"
+          onChangeText={setPassword}
+          secureTextEntry={isSecure}
+          onEndEditing={() => {
+            const passwordChecker = password.length < 8;
+            setPasswordError(passwordChecker);
+          }}
+          right={
+            <TextInput.Icon
+              icon={isSecure ? 'eye' : 'eye-outline'}
+              forceTextInputFocus={false}
+              onPress={() => setIsSecure(!isSecure)}
+            />
           }
-        }}
-        right={
-          <TextInput.Icon
-            icon={isSecure ? 'eye' : 'eye-outline'}
-            forceTextInputFocus={false}
-            onPress={() => setIsSecure(!isSecure)}
-          />
-        }
-      />
+          error={passwordError}
+        />
+        {passwordError && (
+          <HelperText type="error" visible>
+            Invalid password.
+          </HelperText>
+        )}
+      </View>
 
       <Loading visible={isLoading} />
 
-      {!!loggedInRequestError && (
-        <HelperText type="error" visible>
+      {loggedInRequestError && (
+        <HelperText type="error">
           {loggedInRequestError}
         </HelperText>
       )}
@@ -111,7 +125,13 @@ export default function SignIn(): React.JSX.Element {
       <TouchableOpacity>
         <Text className="text-center">
           Don&lsquo;t have have an account?{' '}
-          <Text className="text-primary font-bold">Click Here</Text>
+          <Text className="font-bold">Click Here</Text>
+        </Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity>
+        <Text className="text-center">
+          Forgot Password? <Text className="font-bold">Click Here</Text>
         </Text>
       </TouchableOpacity>
     </Container>
