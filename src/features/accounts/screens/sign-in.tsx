@@ -123,7 +123,7 @@ export default function SignIn(): React.JSX.Element {
         <Button mode="contained">Sign In</Button>
       </TouchableOpacity>
 
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('Sign Up')}>
         <Text className="text-center">
           Don&lsquo;t have have an account?{' '}
           <Text className="font-bold">Click Here</Text>
