@@ -42,15 +42,17 @@ function AuthenticationProvider({
     return subscriber;
   }, [initializing]);
 
+  //TODO Add timeout request
   function loggedInRequest(email: string, password: string) {
     setIsLoading(true);
     auth()
       .signInWithEmailAndPassword(email, password)
       .catch(error => {
         setLoggedInRequestError(signInRequest(error));
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
-
-    setIsLoading(false);
   }
 
   const contextValue = useMemo(
