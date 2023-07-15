@@ -10,7 +10,7 @@ export default function Splashscreen(): React.JSX.Element {
   return (
     <Container styles="items-center justify-center">
       <Icon
-        subtitleColor={colorScheme ? colors.light.text : colors.dark.text}
+        subtitleColor={colorScheme ? colors.text.dark : colors.text.light}
       />
     </Container>
   );
