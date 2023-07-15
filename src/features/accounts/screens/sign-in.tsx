@@ -12,6 +12,7 @@ import Container from '../../../components/container';
 import Animation from '../../../assets/sign-in-animation.json';
 import { AuthenticationContext } from '../../../services/authentication-context';
 import Loading from '../../../components/loading';
+import { useNavigation } from '@react-navigation/native';
 
 export default function SignIn(): React.JSX.Element {
   const [email, setEmail] = useState('');
@@ -24,6 +25,8 @@ export default function SignIn(): React.JSX.Element {
   const { isLoading, loggedInRequest, loggedInRequestError } = useContext(
     AuthenticationContext,
   );
+
+  const navigation = useNavigation();
 
   const onClick = () => {
     const emailChecker = !email || emailError;
@@ -113,9 +116,7 @@ export default function SignIn(): React.JSX.Element {
       <Loading visible={isLoading} />
 
       {loggedInRequestError && (
-        <HelperText type="error">
-          {loggedInRequestError}
-        </HelperText>
+        <HelperText type="error">{loggedInRequestError}</HelperText>
       )}
 
       <TouchableOpacity onPress={onClick}>
@@ -129,7 +130,7 @@ export default function SignIn(): React.JSX.Element {
         </Text>
       </TouchableOpacity>
 
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('Forgot Password')}>
         <Text className="text-center">
           Forgot Password? <Text className="font-bold">Click Here</Text>
         </Text>
