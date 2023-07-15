@@ -46,7 +46,7 @@ export default function SignIn(): React.JSX.Element {
   };
 
   return (
-    <Container styles="p-4 space-y-4 justify-center">
+    <Container styles="space-y-4 justify-center">
       <AnimatedLottieView source={Animation} autoPlay loop className="w-full" />
 
       <Divider />
@@ -54,7 +54,7 @@ export default function SignIn(): React.JSX.Element {
       <View>
         <Text className="text-3xl font-bold text-primary">Hello</Text>
         <Text className="text-3xl font-bold">Login Now</Text>
-        <Text className="pt-2 w-3/4">
+        <Text className="py-2 w-3/4">
           Please fill in the form to create a new account and continue
         </Text>
       </View>
