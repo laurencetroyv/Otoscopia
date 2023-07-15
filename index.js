@@ -26,7 +26,7 @@ function Main() {
       {initializing ? <Splashscreen /> : <App />}
       <StatusBar
         backgroundColor={
-          colorScheme ? colors.dark.background : colors.light.background
+          colorScheme ? colors.background.dark : colors.background.light
         }
         barStyle={colorScheme ? 'light-content' : 'dark-content'}
       />
