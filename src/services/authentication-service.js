@@ -1,18 +1,21 @@
+const errorCode = {
+  'auth/wrong-password':
+    'Incorrect password, please check or click forgot password',
+  'auth/invalid-email': 'That email address is invalid!',
+  'auth/user-not-found':
+    'There is no user record corresponding to this email address, Please create a new account.',
+  'auth/unknown': 'Unknown error occurred, please try again later',
+  'auth/network-request-failed': 'Please check your internet connection',
+};
+
 export const signInRequest = error => {
-  if (error.code === 'auth/email-already-in-use') {
-    return 'That email address is already in use!';
-  }
-  if (error.code === 'auth/invalid-email') {
-    return 'That email address is invalid!';
-  }
-  if (error.code === 'auth/user-not-found') {
-    return 'There is no user record corresponding to this email address, Please create a new account.';
-  }
-  if (error.code === 'auth/unknown') {
-    return 'Unknown error occurred, please try again later'
-  }
-  if (error.code === 'auth/network-request-failed') {
-    return 'Please check your internet connection'
-  }
-  return error.code;
+  return errorCode[error.code];
+};
+
+export const forgotRequest = error => {
+  errorCode.forEach(data => {
+    if (error.code === data.code) {
+      return data.message;
+    }
+  });
 };

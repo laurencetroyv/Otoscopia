@@ -1,13 +1,21 @@
 import { View, Text, TouchableOpacity } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Button, HelperText, TextInput } from 'react-native-paper';
 import AnimatedLottieView from 'lottie-react-native';
+import { useNavigation } from '@react-navigation/native';
 import Container from '../../../components/container';
 import Animation from '../../../assets/password-animation.json';
+import { AuthenticationContext } from '../../../services/authentication-context';
 
 export default function ForgotPassword(): React.JSX.Element {
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState(false);
+
+  const navigation = useNavigation();
+
+  const { forgotPasswordRequest, forgotPasswordRequestError } = useContext(
+    AuthenticationContext,
+  );
 
   const onCLick = () => {
     const emailChecker = !email || emailError;
@@ -17,7 +25,7 @@ export default function ForgotPassword(): React.JSX.Element {
     }
 
     if (!emailChecker) {
-      //TODO send link to reset password.
+      forgotPasswordRequest('laurencetroyv@gmail.com');
     }
   };
 
@@ -58,8 +66,19 @@ export default function ForgotPassword(): React.JSX.Element {
         )}
       </View>
 
+      {forgotPasswordRequestError && (
+        <HelperText type="error">{forgotPasswordRequestError}</HelperText>
+      )}
+
       <TouchableOpacity onPress={onCLick}>
+        
         <Button mode="contained">Reset Password</Button>
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => navigation.goBack()}>
+        <Text className="text-center">
+          Back to <Text className="font-bold">Sign In</Text> page
+        </Text>
       </TouchableOpacity>
     </Container>
   );

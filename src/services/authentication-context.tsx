@@ -1,12 +1,14 @@
 import React, { createContext, useEffect, useMemo, useState } from 'react';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
-import { signInRequest } from './authentication-service';
+import { forgotRequest, signInRequest } from './authentication-service';
 
 interface AuthenticationContextValues {
   isAuthenticated: boolean;
   isLoading: boolean;
   loggedInRequest: (email: string, password: string) => void;
   loggedInRequestError: string;
+  forgotPasswordRequestError: string;
+  forgotPasswordRequest: (email: string) => void;
 }
 
 const AuthenticationContextDefaultProps: AuthenticationContextValues = {
@@ -14,6 +16,8 @@ const AuthenticationContextDefaultProps: AuthenticationContextValues = {
   isLoading: false,
   loggedInRequest: () => {},
   loggedInRequestError: '',
+  forgotPasswordRequestError: '',
+  forgotPasswordRequest: () => {},
 };
 
 export const AuthenticationContext = createContext(
@@ -31,6 +35,8 @@ function AuthenticationProvider({
   const [user, setUser] = useState<FirebaseAuthTypes.User>();
   const [isLoading, setIsLoading] = useState(false);
   const [loggedInRequestError, setLoggedInRequestError] = useState('');
+  const [forgotPasswordRequestError, setForgotPasswordRequestError] =
+    useState('');
 
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(userData => {
@@ -55,14 +61,28 @@ function AuthenticationProvider({
       });
   }
 
+  function forgotPasswordRequest(email: string) {
+    setIsLoading(true);
+    auth()
+      .sendPasswordResetEmail(email)
+      .catch(error => {
+        setForgotPasswordRequestError(forgotRequest(error));
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }
+
   const contextValue = useMemo(
     () => ({
       isAuthenticated: !!user,
       isLoading,
       loggedInRequest,
       loggedInRequestError,
+      forgotPasswordRequest,
+      forgotPasswordRequestError,
     }),
-    [user, isLoading, loggedInRequestError],
+    [user, isLoading, loggedInRequestError, forgotPasswordRequestError],
   );
   return (
     <AuthenticationContext.Provider value={contextValue}>
